@@ -1,23 +1,18 @@
-import useSWR from 'swr';
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-function Comment() {
-  const { data } = useSWR('data/data.json', fetcher);
-  console.log(data);
+function Comment({ profileImage, username, comment, time, likes }) {
+  console.log(profileImage);
 
   return (
     <>
-      <div>
+      <section>
         <div>
-          <img alt="profile" />
-          <h2></h2>
-          <span></span>
-          <p></p>
+          <img src={profileImage} alt="profile image" />
+          <h2>{username}</h2>
+          <span>{time}</span>
+          <p>{comment}</p>
         </div>
-        <button></button>
+        <button>{likes}</button>
         <button>Reply</button>
-      </div>
+      </section>
     </>
   );
 }
