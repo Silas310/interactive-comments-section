@@ -12,21 +12,17 @@ function CommentsSection() {
   return (
     <>
       <section>
-        {data.comments.map(
-          (comment) => (
-            console.log(comment),
-            (
-              <Comment
-                key={comment.id}
-                profileImage={comment.user.image.png}
-                username={comment.user.username}
-                comment={comment.content}
-                time={comment.createdAt}
-                likes={comment.score}
-              />
-            )
-          ),
-        )}
+        {data.comments.map((comment) => (
+          <Comment
+            key={comment.id}
+            profileImage={comment.user.image.png}
+            username={comment.user.username}
+            comment={comment.content}
+            time={comment.createdAt}
+            likes={comment.score}
+            replies={comment.replies}
+          />
+        ))}
       </section>
     </>
   );
