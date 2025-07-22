@@ -1,6 +1,4 @@
 function Comment({ profileImage, username, comment, time, likes }) {
-  console.log(profileImage);
-
   return (
     <>
       <section>

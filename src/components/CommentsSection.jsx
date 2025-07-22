@@ -14,12 +14,12 @@ function CommentsSection() {
       <section>
         {data.comments.map(
           (comment) => (
-            console.log(comment.user.image.png),
+            console.log(comment),
             (
               <Comment
                 key={comment.id}
                 profileImage={comment.user.image.png}
-                username={comment.username}
+                username={comment.user.username}
                 comment={comment.content}
                 time={comment.createdAt}
                 likes={comment.score}
