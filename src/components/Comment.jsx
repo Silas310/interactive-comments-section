@@ -2,18 +2,20 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
   console.log(replies);
   return (
     <>
-      <section className="bg-white">
-        <div>
-          <img src={profileImage} alt="profile image" />
-          <h2>{username}</h2>
-          <span>{time}</span>
-          <p>{comment}</p>
+      <section className="flex flex-col gap-4">
+        <div className="bg-white">
+          <div>
+            <img src={profileImage} alt="profile image" />
+            <h2>{username}</h2>
+            <span>{time}</span>
+            <p>{comment}</p>
+          </div>
+          <button>{likes}</button>
+          <button>Reply</button>
         </div>
-        <button>{likes}</button>
-        <button>Reply</button>
 
         {replies && replies.length > 0 && (
-          <div>
+          <div className="flex flex-col gap-4">
             {replies.map((reply) => (
               <Comment
                 key={reply.id}
