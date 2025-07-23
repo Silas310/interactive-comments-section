@@ -2,7 +2,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
   console.log(replies);
   return (
     <>
-      <section>
+      <section className="bg-white">
         <div>
           <img src={profileImage} alt="profile image" />
           <h2>{username}</h2>
