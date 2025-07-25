@@ -16,7 +16,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
             </div>
             <p className="text-grey-500">{comment}</p>
           </div>
-          <button className="text-purple-600">{likes}</button>
+          <button className="text-purple-600 font-bold bg-grey-100 px-4 rounded-md">{likes}</button>
           <button className="text-purple-600 font-bold">Reply</button>
         </div>
 
