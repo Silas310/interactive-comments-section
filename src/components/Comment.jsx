@@ -14,7 +14,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
           <button>Reply</button>
         </div>
 
-        {replies && replies.length > 0 && (
+        {replies?.length > 0 && (
           <div className="flex flex-col gap-4">
             {replies.map((reply) => (
               <Comment
