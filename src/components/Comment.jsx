@@ -5,13 +5,17 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
       <section className="flex flex-col gap-4">
         <div className="bg-white">
           <div>
-            <img src={profileImage} alt="profile image" />
-            <h2>{username}</h2>
-            <span>{time}</span>
-            <p>{comment}</p>
+            <img
+              src={profileImage}
+              alt="profile image"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
+            />
+            <h2 className="text-grey-800 font-bold">{username}</h2>
+            <span className="text-grey-500">{time}</span>
+            <p className="text-grey-500">{comment}</p>
           </div>
-          <button>{likes}</button>
-          <button>Reply</button>
+          <button className="text-purple-600">{likes}</button>
+          <button className="text-purple-600 font-bold">Reply</button>
         </div>
 
         {replies?.length > 0 && (
