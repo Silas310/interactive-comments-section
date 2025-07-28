@@ -3,9 +3,9 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
   return (
     <>
       <section className="flex flex-col gap-4">
-        <div className="bg-white p-4 rounded-md">
-          <div>
-            <div className="flex items-center gap-4 mb-2">
+        <div className="flex flex-col gap-2 bg-white p-4 rounded-md">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 mb-2">
               <img
                 src={profileImage}
                 alt="profile image"
@@ -16,10 +16,12 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
             </div>
             <p className="text-grey-500">{comment}</p>
           </div>
-          <button className="text-purple-600 font-bold bg-grey-100 px-4 rounded-md">
-            {likes}
-          </button>
-          <button className="text-purple-600 font-bold">Reply</button>
+          <div className="flex justify-between items-center mt-4">
+            <button className="text-purple-600 font-bold bg-grey-100 px-4 rounded-md">
+              {likes}
+            </button>
+            <button className="text-purple-600 font-bold">Reply</button>
+          </div>
         </div>
 
         {replies?.length > 0 && (
