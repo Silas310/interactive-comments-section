@@ -17,17 +17,17 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
             <p className="text-grey-500">{comment}</p>
           </div>
           <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center gap-3 bg-grey-50 px-3.5 py-1.5 rounded-xl">
-              <button>
+            <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl">
+              <button className="cursor-pointer p-2">
                 <img src="/images/icons/icon-plus.svg" alt="icon plus" />
               </button>
               <span className="text-purple-600 font-bold">{likes}</span>
-              <button>
+              <button className="cursor-pointer p-2">
                 <img src="/images/icons/icon-minus.svg" alt="icon minus" />
               </button>
             </div>
 
-            <button className="flex items-center gap-2 text-purple-600 font-bold">
+            <button className="flex items-center gap-2 text-purple-600 font-bold cursor-pointer">
               <img src="/images/icons/icon-reply.svg" alt="icon reply" />
               Reply
             </button>
