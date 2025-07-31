@@ -14,7 +14,7 @@ function CommentsSection() {
     <>
       <section
         className="flex flex-col gap-4 justify-center items-center max-md:max-w-11/12
-       md:max-w-8/12 lg:max-w-7/12 xl:max-w-5/12 py-6 "
+       md:max-w-8/12 lg:max-w-7/12 xl:max-w-5/12 py-6 md:gap-6"
       >
         {data.comments.map((comment) => (
           <Comment

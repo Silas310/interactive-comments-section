@@ -2,7 +2,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
   console.log(replies);
   return (
     <>
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4 md:gap-6">
         <div className="flex flex-col gap-2 bg-white p-4 rounded-md">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2 mb-2">
@@ -35,18 +35,20 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
         </div>
 
         {replies?.length > 0 && (
-          <div className="flex flex-col gap-4 border-l-2 border-grey-100 pl-4 md:pl-10">
-            {replies.map((reply) => (
-              <Comment
-                key={reply.id}
-                profileImage={reply.user.image.png}
-                username={reply.user.username}
-                comment={reply.content}
-                time={reply.createdAt}
-                likes={reply.score}
-                replies={reply.replies}
-              />
-            ))}
+          <div className="md:pl-8 ">
+            <div className="flex flex-col gap-4 border-l-2 border-grey-100 pl-4 md:pl-8">
+              {replies.map((reply) => (
+                <Comment
+                  key={reply.id}
+                  profileImage={reply.user.image.png}
+                  username={reply.user.username}
+                  comment={reply.content}
+                  time={reply.createdAt}
+                  likes={reply.score}
+                  replies={reply.replies}
+                />
+              ))}
+            </div>
           </div>
         )}
       </section>
