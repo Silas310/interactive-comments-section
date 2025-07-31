@@ -35,7 +35,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
         </div>
 
         {replies?.length > 0 && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 border-l-2 border-grey-100 pl-4 md:pl-10">
             {replies.map((reply) => (
               <Comment
                 key={reply.id}
