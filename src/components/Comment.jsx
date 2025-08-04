@@ -12,7 +12,14 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
                 className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
               />
               <h2 className="text-grey-800 font-bold">
-                {username} {username === 'juliusomo' ? <span className="text-white bg-purple-600 py-[0.1rem] px-1 font-normal">you</span> : ''}
+                {username}{' '}
+                {username === 'juliusomo' ? (
+                  <span className="text-white bg-purple-600 py-[0.1rem] px-1 font-normal">
+                    you
+                  </span>
+                ) : (
+                  ''
+                )}
               </h2>
               <span className="text-grey-500">{time}</span>
             </div>
