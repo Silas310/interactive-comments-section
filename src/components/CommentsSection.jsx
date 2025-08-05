@@ -6,7 +6,6 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function CommentsSection() {
   const { data, error, isLoading } = useSWR('data/data.json', fetcher);
-  const profileUsername = 'juliusomo';
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
@@ -28,8 +27,8 @@ function CommentsSection() {
             replies={comment.replies}
           />
         ))}
-        {data.currentUser.username === profileUsername && (
-          <CommentArea profileImage={data.currentUser.image.png} />
+        {data.currentUser && (
+          <CommentArea profileImage={data.currentUser.image?.png} />
         )}
       </section>
     </>
