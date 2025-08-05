@@ -1,5 +1,4 @@
 function Comment({ profileImage, username, comment, time, likes, replies }) {
-  console.log(replies);
   return (
     <>
       <section className="flex flex-col gap-4 md:gap-6">
