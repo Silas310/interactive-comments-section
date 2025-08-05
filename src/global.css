@@ -32,3 +32,7 @@ body {
  --color-grey-50: hsl(228, 33%, 97%);
  --color-white: hsl(0, 100%, 100%);
 }
+
+.btn{
+  @apply text-white bg-purple-600 px-6 py-2 rounded-md font-medium cursor-pointer;
+}

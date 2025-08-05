@@ -8,7 +8,7 @@ function CommentArea() {
         placeholder="Add a comment..."
       ></textarea>
       <img src="" alt="" />
-      <button>Send</button>
+      <button className="btn">SEND</button>
     </div>
   );
 }
