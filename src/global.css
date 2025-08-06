@@ -34,5 +34,5 @@ body {
 }
 
 .btn{
-  @apply text-white bg-purple-600 px-6 py-2 rounded-md font-medium cursor-pointer;
+  @apply text-white bg-purple-600 hover:bg-purple-200 px-6 py-2 rounded-md font-medium cursor-pointer;
 }
