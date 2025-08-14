@@ -1,4 +1,21 @@
+import React, { useState } from 'react';
+
 function Comment({ profileImage, username, comment, time, likes, replies }) {
+  const [likeCount, setLikeCount] = useState(likes);
+  const [hasLiked, setHasLiked] = useState(false);
+
+  const handleLike = () => {
+    if (!hasLiked) {
+      setLikeCount(likeCount + 1);
+      setHasLiked(true);
+    }
+  };
+  const handleDislike = () => {
+    if (hasLiked) {
+      setLikeCount(likeCount - 1);
+      setHasLiked(false);
+    }
+  };
   return (
     <>
       <section className="flex flex-col gap-4 md:gap-6">
@@ -26,7 +43,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl">
-              <button className="cursor-pointer p-2 group">
+              <button className="cursor-pointer p-2 group" onClick={handleLike}>
                 <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
                   <path
                     className="group-hover:fill-purple-600"
@@ -39,8 +56,11 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
                   />
                 </svg>
               </button>
-              <span className="text-purple-600 font-bold">{likes}</span>
-              <button className="cursor-pointer p-2 group">
+              <span className="text-purple-600 font-bold">{likeCount}</span>
+              <button
+                className="cursor-pointer p-2 group"
+                onClick={handleDislike}
+              >
                 <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
                   <path
                     className="group-hover:fill-purple-600"
