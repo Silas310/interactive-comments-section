@@ -46,7 +46,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               <button className="cursor-pointer p-2 group" onClick={handleLike}>
                 <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
                   <path
-                    className="group-hover:fill-purple-600"
+                    className={`${hasLiked ? 'fill-purple-600' : 'fill-[#C5C6EF]'} group-hover:fill-purple-600`}
                     d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 
                     .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 
                     0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 
