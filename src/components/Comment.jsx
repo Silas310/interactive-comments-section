@@ -42,7 +42,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
             <p className="text-grey-500">{comment}</p>
           </div>
           <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl">
+            <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl md:flex-col">
               <button className="cursor-pointer p-2 group" onClick={handleLike}>
                 <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
                   <path
