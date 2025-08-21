@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import CommentArea from './CommentArea';
 
 function Comment({ profileImage, username, comment, time, likes, replies }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
+
+  const currentUser = {
+    username: 'juliusomo',
+    image: '/images/avatars/image-juliusomo.png',
+  };
 
   const handleLike = () => {
     if (!hasLiked) {
@@ -16,6 +23,10 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
       setLikeCount(likeCount - 1);
       setHasLiked(false);
     }
+  };
+
+  const handleIsReplying = () => {
+    setIsReplying(!isReplying);
   };
 
   return (
@@ -108,13 +119,25 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               </button>
             </div>
 
-            <button className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer">
+            <button
+              className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
+              onClick={handleIsReplying}
+            >
               <img src="/images/icons/icon-reply.svg" alt="icon reply" />
               Reply
             </button>
           </div>
         </div>
       </div>
+      {/* Reply Area */}
+      {isReplying && (
+        <div className="mt-4">
+          <CommentArea
+            profileImage={currentUser.image}
+            username={currentUser.username}
+          />
+        </div>
+      )}
 
       {/* Replies */}
       {replies?.length > 0 && (
