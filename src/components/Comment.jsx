@@ -5,9 +5,9 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
+  const repliedUser = { username }; // To pass to CommentArea if replying
 
   const currentUser = {
-    username: 'juliusomo',
     image: '/images/avatars/image-juliusomo.png',
   };
 
@@ -134,10 +134,11 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
       </div>
       {/* Reply Area */}
       {isReplying && (
-        <div className="mt-4">
+        <div>
           <CommentArea
             profileImage={currentUser.image}
-            username={currentUser.username}
+            isReplying={isReplying}
+            repliedUsername={repliedUser.username}
           />
         </div>
       )}
