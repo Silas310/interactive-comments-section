@@ -79,7 +79,10 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               <span className="text-grey-500">{time}</span>
             </div>
 
-            <button className="hidden md:flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer">
+            <button
+              className="hidden md:flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
+              onClick={handleIsReplying}
+            >
               <img src="/images/icons/icon-reply.svg" alt="icon reply" />
               Reply
             </button>
