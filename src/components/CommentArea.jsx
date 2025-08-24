@@ -11,7 +11,7 @@ function CommentArea({ profileImage, isReplying, repliedUsername }) {
       <textarea
         name="comment"
         id="comment"
-        className="w-full outline-grey-100 hover:outline-purple-600 hover:cursor-pointer outline-1 resize-none text-grey-800 rounded-md px-4 py-2 h-1/2 pb-6 col-span-full row-end-2 h-full"
+        className="w-full outline-grey-100 hover:outline-purple-600 hover:cursor-pointer outline-1 resize-none text-grey-800 rounded-md px-4 py-2 pb-6 col-span-full row-end-2 h-full"
         placeholder="Add a comment..."
         defaultValue={isReplying ? `@${repliedUsername}` : ''}
       ></textarea>

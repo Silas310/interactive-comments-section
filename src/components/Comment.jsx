@@ -9,6 +9,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
 
   const currentUser = {
     image: '/images/avatars/image-juliusomo.png',
+    username: 'juliusomo',
   };
 
   const handleLike = () => {
@@ -79,13 +80,20 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               <span className="text-grey-500">{time}</span>
             </div>
 
-            <button
-              className="hidden md:flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
-              onClick={handleIsReplying}
-            >
-              <img src="/images/icons/icon-reply.svg" alt="icon reply" />
-              Reply
-            </button>
+            {currentUser.username === username ? (
+              <div className="hidden md:flex items-center gap-4 text-red-600 font-bold cursor-pointer">
+                <button>delete</button>
+                <button>edit</button>
+              </div>
+            ) : (
+              <button
+                className="hidden md:flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
+                onClick={handleIsReplying}
+              >
+                <img src="/images/icons/icon-reply.svg" alt="icon reply" />
+                Reply
+              </button>
+            )}
           </div>
 
           <p className="text-grey-500">{comment}</p>
@@ -122,13 +130,20 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               </button>
             </div>
 
-            <button
-              className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
-              onClick={handleIsReplying}
-            >
-              <img src="/images/icons/icon-reply.svg" alt="icon reply" />
-              Reply
-            </button>
+            {currentUser.username === username ? (
+              <div className="flex items-center gap-4 text-red-600 font-bold cursor-pointer">
+                <button>delete</button>
+                <button>edit</button>
+              </div>
+            ) : (
+              <button
+                className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
+                onClick={handleIsReplying}
+              >
+                <img src="/images/icons/icon-reply.svg" alt="icon reply" />
+                Reply
+              </button>
+            )}
           </div>
         </div>
       </div>
