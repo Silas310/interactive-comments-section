@@ -82,11 +82,11 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
 
             {currentUser.username === username ? (
               <div className="hidden md:flex items-center gap-4 font-bold cursor-pointer">
-                <button className="flex items-center gap-2">
+                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
-                <button className="flex items-center gap-2">
+                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-edit.svg" alt="edit icon" />
                   <span className="text-purple-600">Edit</span>
                 </button>
@@ -138,11 +138,11 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
 
             {currentUser.username === username ? (
               <div className="flex items-center gap-4 font-bold cursor-pointer">
-                <button className="flex items-center gap-2">
+                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
-                <button className="flex items-center gap-2">
+                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-edit.svg" alt="edit icon" />
                   <span className="text-purple-600">Edit</span>
                 </button>
