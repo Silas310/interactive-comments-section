@@ -1,11 +1,12 @@
 import Comment from './Comment';
 import CommentArea from './CommentArea';
 import useSWR from 'swr';
+const API_URL = 'api/comments';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function CommentsSection() {
-  const { data, error, isLoading } = useSWR('data/data.json', fetcher);
+  const { data, error, isLoading } = useSWR(API_URL, fetcher);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
