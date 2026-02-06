@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const Comment = require('./models/comment');
+const { log } = require('console');
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
@@ -11,13 +13,38 @@ app.get('/', (_req, res) => {
 });
 
 app.get('/api/comments', (_req, res) => { // get all comments
-  try {
-    const data = require('../public/data/data.json');
-    res.json(data);
-  } catch (error) {
-    console.error('Error reading data:', error);
-    res.status(500).json({ error: 'Failed to read data' });
+  Comment.find({})
+    .sort({ date: 1 }) // start from the oldest comment
+    .then(comments =>{
+      res.json(comments);
+    })
+    .catch( error => {
+      console.error('Error fetching comments: ', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
+app.post('/api/comments', (req, res) => { // add a new comment
+  const info = req.body;
+  
+  if (!info.content) {
+    return res.status(400).json({ error: 'Content is required' });
   }
+
+  const comment = new Comment({ // using as constructor to create a new comment object
+    content: info.content,
+    user: info.user,
+  });
+
+  comment.save() // using as mongoose model to save the comment to the database
+    .then(savedComment => {
+      res.status(201).json(savedComment);
+      console.log('Comment saved: ', savedComment);
+    })
+    .catch(error => {
+      console.error('Error saving comment: ', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+  });
 });
 
 module.exports = app;
