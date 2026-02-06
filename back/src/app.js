@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const Comment = require('./models/comment');
-const { log } = require('console');
+
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
@@ -46,5 +46,23 @@ app.post('/api/comments', (req, res) => { // add a new comment
       res.status(500).json({ error: 'Internal Server Error' });
   });
 });
+
+app.delete('/api/comments/:id', (req, res) => { // delete comments by id
+  const id = req.params.id;
+
+  Comment.findByIdAndDelete(id)
+    .then( deletedComment => {
+      if (deletedComment) {
+        console.log('Comment deleted: ', deletedComment);
+        return res.status(204).end();
+      }
+      res.status(404).json({ error: 'Comment not found' });
+      
+    })
+    .catch( error => {
+      console.error('Error deleting comment: ', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+}) 
 
 module.exports = app;
