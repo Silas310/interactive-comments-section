@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
+
 const commonStructure = { // DRY: Don't Repeat Yourself
   user: { 
     username: { type: String, required: true },
-    image: { type: String },
+    image: {
+      png: { type: String, required: true },
+      webp: { type: String, required: true },
+    },
   },
   date: { type: Date, default: Date.now },
   content: { type: String, required: true }, 
