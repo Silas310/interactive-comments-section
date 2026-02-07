@@ -60,6 +60,9 @@ app.delete('/api/comments/:id', (req, res) => { // delete comments by id
       
     })
     .catch( error => {
+      if (error.name === 'CastError') {
+        return res.status(400).json({ error: 'Invalid comment ID' });
+      }
       console.error('Error deleting comment: ', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     });
