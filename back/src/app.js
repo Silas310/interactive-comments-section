@@ -66,6 +66,27 @@ app.delete('/api/comments/:id', (req, res) => { // delete comments by id
       console.error('Error deleting comment: ', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     });
-}) 
+});
+
+app.patch('/api/comments/:id', (req, res)=> { // update comments by id
+  const id = req.params.id;
+  const newInfo = req.body;
+  
+  Comment.findByIdAndUpdate(id, newInfo, { new: true, runValidators: true })
+  .then(updatedComment => {
+    if (updatedComment) {
+      console.log('Comment updated: ', updatedComment);
+      return res.json(updatedComment);
+    }
+    res.status(404).json({ error: 'Comment not found' });
+  })
+  .catch(error => {
+    if (error.name === 'CastError') { // wrong id format
+      return res.status(400).json({ error: 'Invalid comment ID' });
+    }
+    console.error('Error updating comment: ', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  });
+})
 
 module.exports = app;
