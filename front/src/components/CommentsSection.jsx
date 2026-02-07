@@ -10,6 +10,7 @@ function CommentsSection() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
+  console.log(data);
 
   return (
     <>
@@ -17,7 +18,7 @@ function CommentsSection() {
         className="flex flex-col gap-4 justify-center items-center max-md:max-w-11/12
        md:max-w-8/12 lg:max-w-7/12 xl:max-w-5/12 py-6 md:gap-6"
       >
-        {data.comments.map((comment) => (
+        {/* {data.comments.map((comment) => (
           <Comment
             key={comment.id}
             profileImage={comment.user.image.png}
@@ -27,10 +28,19 @@ function CommentsSection() {
             likes={comment.score}
             replies={comment.replies}
           />
+        ))} */}
+        {data.map((comment) => (
+          <Comment
+            key={comment._id}
+            profileImage={comment.user.image.png}
+            username={comment.user.username}
+            comment={comment.content}
+            time={comment.createdAt || ''}
+            likes={comment.score}
+            replies={comment.replies}
+          />
         ))}
-        {data.currentUser && (
-          <CommentArea profileImage={data.currentUser.image?.png} />
-        )}
+        {<CommentArea />}
       </section>
     </>
   );
