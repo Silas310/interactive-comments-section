@@ -1,4 +1,10 @@
-function CommentArea({ profileImage, handleSend, textValue, setTextValue }) {
+function CommentArea({
+  profileImage,
+  handleSend,
+  textValue,
+  setTextValue,
+  isSending,
+}) {
   return (
     <div className="bg-white rounded-lg w-full p-4 md:p-5 grid md:flex grid-cols-[1fr_4fr_1fr] grid-rows-[3fr_1fr] md:gap-4 gap-y-8">
       <img
@@ -17,6 +23,7 @@ function CommentArea({ profileImage, handleSend, textValue, setTextValue }) {
       <button
         onClick={handleSend}
         className="btn max-h-10 col-end-4 justify-self-end"
+        disabled={isSending}
       >
         SEND
       </button>

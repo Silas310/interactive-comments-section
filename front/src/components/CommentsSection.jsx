@@ -11,6 +11,7 @@ function CommentsSection() {
   const { data, error, isLoading, mutate } = useSWR(API_URL, fetcher);
   const { data: currentUser } = useSWR(`api/users/${USER_ID}`, fetcher);
   const [textValue, setTextValue] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
@@ -22,6 +23,7 @@ function CommentsSection() {
     };
 
     if (!textValue.trim()) return; // Prevent triggering requests with empty comments
+    setIsSending(true);
 
     try {
       const response = await fetch(API_URL, {
@@ -31,13 +33,15 @@ function CommentsSection() {
         },
         body: JSON.stringify(newComment),
       });
-      if (response.ok) {
-        const data = await response.json();
-        mutate([...data, newComment], false);
+      if (response.ok) { // erase input, add comment to list immediately ensure data is up to date
         setTextValue('');
+        const savedComment = await response.json();
+        mutate((prevData) => [...prevData, savedComment], { revalidate: true });
       }
     } catch (error) {
       console.error('Error sending comment:', error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -65,6 +69,7 @@ function CommentsSection() {
             handleSend={handleSend}
             textValue={textValue}
             setTextValue={setTextValue}
+            isSending={isSending}
           />
         )}
       </section>
