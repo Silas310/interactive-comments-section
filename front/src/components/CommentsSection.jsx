@@ -12,6 +12,7 @@ function CommentsSection() {
   const { data: currentUser } = useSWR(`api/users/${USER_ID}`, fetcher);
   const [textValue, setTextValue] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [_commentId, setCommentId] = useState(null);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
@@ -33,7 +34,8 @@ function CommentsSection() {
         },
         body: JSON.stringify(newComment),
       });
-      if (response.ok) { // erase input, add comment to list immediately ensure data is up to date
+      if (response.ok) {
+        // erase input, add comment to list immediately ensure data is up to date
         setTextValue('');
         const savedComment = await response.json();
         mutate((prevData) => [...prevData, savedComment], { revalidate: true });
@@ -43,6 +45,27 @@ function CommentsSection() {
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handleDelete = (commentId) => {
+    mutate((prevData) => prevData.filter((c) => c._id !== commentId), {
+      revalidate: false,
+    });
+
+    fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Comment deleted successfully');
+          mutate(); // Refresh the comments list after deletion
+        } else {
+          console.error('Failed to delete comment');
+        }
+      })
+      .catch((error) => {
+        console.error('Error deleting comment: ', error);
+      });
   };
 
   return (
@@ -60,6 +83,8 @@ function CommentsSection() {
             replies={comment.replies}
             currentUser={currentUser}
             mutate={mutate}
+            setCommentId={setCommentId}
+            handleDelete={handleDelete}
           />
         ))}
         {currentUser && (
