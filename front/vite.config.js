@@ -6,7 +6,12 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'http://localhost:3001',
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path, // Garante que o /api não seja removido
+      },
       '/images': 'http://localhost:3001',
     },
   },

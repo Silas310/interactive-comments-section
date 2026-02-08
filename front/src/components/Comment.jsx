@@ -9,6 +9,8 @@ function Comment({
   likes,
   replies,
   currentUser,
+  commentId,
+  mutate,
 }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
@@ -31,6 +33,23 @@ function Comment({
 
   const handleIsReplying = () => {
     setIsReplying(!isReplying);
+  };
+
+  const handleDelete = () => {
+    fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Comment deleted successfully');
+          mutate(); // Refresh the comments list after deletion
+        } else {
+          console.error('Failed to delete comment');
+        }
+      })
+      .catch((error) => {
+        console.error('Error deleting comment: ', error);
+      });
   };
 
   return (
@@ -85,7 +104,10 @@ function Comment({
 
             {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
               <div className="hidden md:flex items-center gap-4 font-bold cursor-pointer">
-                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
+                <button
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
+                  onClick={handleDelete}
+                >
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
@@ -141,7 +163,10 @@ function Comment({
 
             {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
               <div className="flex items-center gap-4 font-bold cursor-pointer">
-                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
+                <button
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
+                  onClick={handleDelete}
+                >
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
@@ -180,6 +205,8 @@ function Comment({
             {replies.map((reply) => (
               <Comment
                 key={reply._id}
+                commentId={reply._id}
+                mutate={mutate}
                 profileImage={reply.user.image.png}
                 username={reply.user.username}
                 comment={reply.content}

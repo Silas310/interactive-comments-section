@@ -6,7 +6,40 @@ const User = require('../src/models/User');
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
-app.use(express.json()); 
+app.use(express.json());
+
+app.delete('/api/comments/:id', async (req, res) => {
+  console.log('Delete request received for ID:', req.params.id);
+  const { id } = req.params;
+
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(id);
+
+    if (deletedComment) {
+      console.log('Parent comment deleted:', id);
+      return res.status(204).end();
+    }
+
+    const updatedParent = await Comment.findOneAndUpdate(
+      { "replies._id": id },
+      { $pull: { replies: { _id: id } } }, // pull the reply with the given id from the replies array of its parent comment
+      { new: true }
+    );
+
+    if (updatedParent) { // if a reply was deleted, return 204
+      return res.status(204).end();
+    }
+
+    return res.status(404).json({ error: 'Comment or Reply not found' });
+
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+    console.error('Error deleting:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.get('/', (_req, res) => {
   res.send('Hello World!');
@@ -65,27 +98,6 @@ app.post('/api/comments', (req, res) => { // add a new comment
       console.error('Error saving comment: ', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
   });
-});
-
-app.delete('/api/comments/:id', (req, res) => { // delete comments by id
-  const id = req.params.id;
-
-  Comment.findByIdAndDelete(id)
-    .then( deletedComment => {
-      if (deletedComment) {
-        console.log('Comment deleted: ', deletedComment);
-        return res.status(204).end();
-      }
-      res.status(404).json({ error: 'Comment not found' });
-      
-    })
-    .catch( error => {
-      if (error.name === 'CastError') {
-        return res.status(400).json({ error: 'Invalid comment ID' });
-      }
-      console.error('Error deleting comment: ', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
 });
 
 app.patch('/api/comments/:id', (req, res)=> { // update comments by id

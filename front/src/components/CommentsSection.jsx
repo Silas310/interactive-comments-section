@@ -7,7 +7,7 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function CommentsSection() {
   const USER_ID = '6987ef70267511998e07adc9';
-  const { data, error, isLoading } = useSWR(API_URL, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(API_URL, fetcher);
   const { data: currentUser } = useSWR(`api/users/${USER_ID}`, fetcher);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
@@ -22,6 +22,7 @@ function CommentsSection() {
         {data.map((comment) => (
           <Comment
             key={comment._id}
+            commentId={comment._id}
             profileImage={comment.user.image.png}
             username={comment.user.username}
             comment={comment.content}
@@ -29,6 +30,7 @@ function CommentsSection() {
             likes={comment.score}
             replies={comment.replies}
             currentUser={currentUser}
+            mutate={mutate}
           />
         ))}
         {currentUser && (

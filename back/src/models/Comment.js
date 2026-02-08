@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-
-const commonStructure = { // DRY: Don't Repeat Yourself
+const replySchema = new mongoose.Schema({
   user: { 
     username: { type: String, required: true },
     image: {
@@ -9,18 +8,23 @@ const commonStructure = { // DRY: Don't Repeat Yourself
       webp: { type: String, required: true },
     },
   },
-  date: { type: Date, default: Date.now },
   content: { type: String, required: true }, 
   score: { type: Number, default: 0 },
-};
-
-const replySchema = new mongoose.Schema({
-  ...commonStructure,
   replyingTo: { type: String, required: true },
-});
+  createdAt: { type: String, default: "Today" }
+}, { _id: true });
 
 const commentSchema = new mongoose.Schema({
-  ...commonStructure,
+  user: { 
+    username: { type: String, required: true },
+    image: {
+      png: { type: String, required: true },
+      webp: { type: String, required: true },
+    },
+  },
+  content: { type: String, required: true },
+  score: { type: Number, default: 0 },
+  createdAt: { type: String },
   replies: [replySchema],
 });
 
