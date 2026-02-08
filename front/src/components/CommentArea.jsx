@@ -1,6 +1,4 @@
 function CommentArea({ profileImage, isReplying, repliedUsername }) {
-  console.log(repliedUsername);
-
   return (
     <div className="bg-white rounded-lg w-full p-4 md:p-5 grid md:flex grid-cols-[1fr_4fr_1fr] grid-rows-[3fr_1fr] md:gap-4 gap-y-8">
       <img

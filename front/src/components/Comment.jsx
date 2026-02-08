@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import CommentArea from './CommentArea';
 
-function Comment({ profileImage, username, comment, time, likes, replies }) {
+function Comment({
+  profileImage,
+  username,
+  comment,
+  time,
+  likes,
+  replies,
+  currentUser,
+}) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const repliedUser = { username }; // To pass to CommentArea if replying
-
-  const currentUser = {
-    image: '/images/avatars/image-juliusomo.png',
-    username: 'juliusomo',
-  };
 
   const handleLike = () => {
     if (!hasLiked) {
@@ -71,7 +74,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               />
               <h2 className="text-grey-800 font-bold">
                 {username}{' '}
-                {username === 'juliusomo' && (
+                {username === currentUser?.username && ( // name + if its the current user, show "you" badge
                   <span className="text-white bg-purple-600 py-[0.1rem] px-1 font-normal">
                     you
                   </span>
@@ -80,7 +83,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               <span className="text-grey-500">{time}</span>
             </div>
 
-            {currentUser.username === username ? (
+            {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
               <div className="hidden md:flex items-center gap-4 font-bold cursor-pointer">
                 <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
@@ -136,7 +139,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
               </button>
             </div>
 
-            {currentUser.username === username ? (
+            {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
               <div className="flex items-center gap-4 font-bold cursor-pointer">
                 <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
@@ -148,7 +151,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
                 </button>
               </div>
             ) : (
-              <button
+              <button // if not the comment owner, show reply button
                 className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
                 onClick={handleIsReplying}
               >
@@ -163,7 +166,7 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
       {isReplying && (
         <div>
           <CommentArea
-            profileImage={currentUser.image}
+            profileImage={currentUser.image.png}
             isReplying={isReplying}
             repliedUsername={repliedUser.username}
           />
@@ -176,13 +179,14 @@ function Comment({ profileImage, username, comment, time, likes, replies }) {
           <div className="flex flex-col gap-4 border-l-2 border-grey-100 pl-4 md:pl-8">
             {replies.map((reply) => (
               <Comment
-                key={reply.id}
+                key={reply._id}
                 profileImage={reply.user.image.png}
                 username={reply.user.username}
                 comment={reply.content}
                 time={reply.createdAt}
                 likes={reply.score}
                 replies={reply.replies}
+                currentUser={currentUser}
               />
             ))}
           </div>
