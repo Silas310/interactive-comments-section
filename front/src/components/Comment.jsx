@@ -12,11 +12,13 @@ function Comment({
   mutate,
   handleDelete,
   commentId,
+  handleReply,
 }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const repliedUser = { username }; // To pass to CommentArea if replying
+  const [replyText, setReplyText] = useState('');
 
   const handleLike = () => {
     if (!hasLiked) {
@@ -34,6 +36,12 @@ function Comment({
 
   const handleIsReplying = () => {
     setIsReplying(!isReplying);
+  };
+
+  const onReplySubmit = async () => {
+    await handleReply(commentId, replyText, username);
+    setReplyText(''); // Limpa o texto
+    setIsReplying(false); // Fecha a área
   };
 
   return (
@@ -178,6 +186,9 @@ function Comment({
             profileImage={currentUser.image.png}
             isReplying={isReplying}
             repliedUsername={repliedUser.username}
+            textValue={replyText}
+            setTextValue={setReplyText}
+            handleSend={onReplySubmit}
           />
         </div>
       )}
@@ -198,6 +209,8 @@ function Comment({
                 likes={reply.score}
                 replies={reply.replies}
                 currentUser={currentUser}
+                handleDelete={handleDelete}
+                handleReply={handleReply}
               />
             ))}
           </div>

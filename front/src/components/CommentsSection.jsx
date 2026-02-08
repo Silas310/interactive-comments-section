@@ -13,6 +13,7 @@ function CommentsSection() {
   const [textValue, setTextValue] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [_commentId, setCommentId] = useState(null);
+  const [isReplying, _setIsReplying] = useState(false);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
@@ -68,6 +69,31 @@ function CommentsSection() {
       });
   };
 
+  // ... dentro de CommentsSection
+  const handleReply = async (commentId, replyText, replyingTo) => {
+    if (!replyText.trim()) return;
+
+    const newReply = {
+      content: replyText,
+      replyingTo: replyingTo,
+      user: currentUser,
+    };
+
+    try {
+      const response = await fetch(`/api/comments/${commentId}/replies`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReply),
+      });
+
+      if (response.ok) {
+        mutate(); // Recarrega os dados para mostrar a resposta
+      }
+    } catch (error) {
+      console.error('Error sending reply:', error);
+    }
+  };
+
   return (
     <>
       <section className="flex flex-col gap-4 py-6 w-full max-w-3xl mx-auto px-4 md:gap-6">
@@ -85,6 +111,7 @@ function CommentsSection() {
             mutate={mutate}
             setCommentId={setCommentId}
             handleDelete={handleDelete}
+            handleReply={handleReply}
           />
         ))}
         {currentUser && (
@@ -95,6 +122,7 @@ function CommentsSection() {
             textValue={textValue}
             setTextValue={setTextValue}
             isSending={isSending}
+            isReplying={isReplying}
           />
         )}
       </section>

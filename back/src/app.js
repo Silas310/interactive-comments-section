@@ -121,4 +121,39 @@ app.patch('/api/comments/:id', (req, res)=> { // update comments by id
   });
 })
 
+app.post('/api/comments/:id/replies', (req, res) => { // add a reply to a comment
+  const commentId = req.params.id;
+  const replyInfo = req.body;
+
+  if (!replyInfo.content || !replyInfo.replyingTo || !replyInfo.user) {
+    return res.status(400).json({ error: 'Content required' });
+  }
+
+  const newReply = {
+    content: replyInfo.content,
+    replyingTo: replyInfo.replyingTo,
+    user: replyInfo.user,
+  };
+
+  Comment.findByIdAndUpdate( // find the parent comment by id and update it
+    commentId,
+    { $push: { replies: newReply } }, // push the new reply to the replies array of the parent comment
+    { new: true, runValidators: true }
+  )
+    .then(updatedComment => {
+      if (updatedComment) {
+        console.log('Reply added: ', updatedComment);
+        return res.status(201).json(updatedComment);
+      }
+      res.status(404).json({ error: 'Parent comment not found' });
+    })
+    .catch(error => {
+      if (error.name === 'CastError') {
+        return res.status(400).json({ error: 'Invalid comment ID' });
+      }
+      console.error('Error adding reply: ', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
 module.exports = app;
