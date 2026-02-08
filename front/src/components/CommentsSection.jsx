@@ -40,10 +40,7 @@ function CommentsSection() {
 
   return (
     <>
-      <section
-        className="flex flex-col gap-4 justify-center items-center max-md:max-w-11/12
-       md:max-w-8/12 lg:max-w-7/12 xl:max-w-5/12 py-6 md:gap-6"
-      >
+      <section className="flex flex-col gap-4 py-6 w-full max-w-3xl mx-auto px-4 md:gap-6">
         {data.map((comment) => (
           <Comment
             key={comment._id}
