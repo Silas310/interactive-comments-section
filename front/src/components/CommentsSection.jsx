@@ -20,6 +20,9 @@ function CommentsSection() {
       content: textValue,
       user: currentUser,
     };
+
+    if (!textValue.trim()) return; // Prevent triggering requests with empty comments
+
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
