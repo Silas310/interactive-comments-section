@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const Comment = require('./models/comment');
-
+const User = require('../src/models/User');
 
 app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
 
@@ -23,6 +23,26 @@ app.get('/api/comments', (_req, res) => { // get all comments
       res.status(500).json({ error: 'Internal Server Error' });
     });
 });
+
+app.get('/api/users/:id', (req, res) => { // get current user info by id
+  const currentUser = req.params.id;
+
+  User.findById(currentUser)
+    .then(userInfo => {
+      if (userInfo) {
+        console.log('User info: ', userInfo);
+        return res.json(userInfo);
+      }
+      res.status(404).json({ error: 'User not found' });
+    })
+    .catch(error => {
+      if (error.name === 'CastError') {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+      console.error('Error fetching user info: ', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+})
 
 app.post('/api/comments', (req, res) => { // add a new comment
   const info = req.body;
