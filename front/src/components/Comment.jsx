@@ -220,7 +220,6 @@ function Comment({
             textValue={replyText}
             setTextValue={setReplyText}
             handleSend={onReplySubmit}
-            isReplying={isReplying}
           />
         </div>
       )}
