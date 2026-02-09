@@ -100,26 +100,32 @@ app.post('/api/comments', (req, res) => { // add a new comment
   });
 });
 
-app.patch('/api/comments/:id', (req, res)=> { // update comments by id
-  const id = req.params.id;
-  const newInfo = req.body;
-  
-  Comment.findByIdAndUpdate(id, newInfo, { new: true, runValidators: true })
-  .then(updatedComment => {
-    if (updatedComment) {
-      console.log('Comment updated: ', updatedComment);
-      return res.json(updatedComment);
+app.patch('/api/comments/:id', async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+
+  try { // main comments logic
+    let updated = await Comment.findByIdAndUpdate(
+      id, 
+      { content }, 
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) { // reply logic
+      updated = await Comment.findOneAndUpdate(
+        { "replies._id": id },
+        { $set: { "replies.$.content": content } },
+        { new: true }
+      );
     }
-    res.status(404).json({ error: 'Comment not found' });
-  })
-  .catch(error => {
-    if (error.name === 'CastError') { // wrong id format
-      return res.status(400).json({ error: 'Invalid comment ID' });
-    }
-    console.error('Error updating comment: ', error.message);
+
+    if (!updated) return res.status(404).json({ error: 'Not found' });
+    
+    res.json(updated);
+  } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
-  });
-})
+  }
+});
 
 app.post('/api/comments/:id/replies', (req, res) => { // add a reply to a comment
   const commentId = req.params.id;

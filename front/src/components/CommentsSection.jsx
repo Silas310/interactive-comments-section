@@ -69,7 +69,6 @@ function CommentsSection() {
       });
   };
 
-  // ... dentro de CommentsSection
   const handleReply = async (commentId, replyText, replyingTo) => {
     if (!replyText.trim()) return;
 
@@ -87,10 +86,26 @@ function CommentsSection() {
       });
 
       if (response.ok) {
-        mutate(); // Recarrega os dados para mostrar a resposta
+        mutate();
       }
     } catch (error) {
       console.error('Error sending reply:', error);
+    }
+  };
+
+  const handleUpdate = async (id, newContent) => {
+    try {
+      const response = await fetch(`/api/comments/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: newContent }),
+      });
+
+      if (response.ok) {
+        mutate();
+      }
+    } catch (err) {
+      console.error('Update failed', err);
     }
   };
 
@@ -112,6 +127,7 @@ function CommentsSection() {
             setCommentId={setCommentId}
             handleDelete={handleDelete}
             handleReply={handleReply}
+            handleUpdate={handleUpdate}
           />
         ))}
         {currentUser && (

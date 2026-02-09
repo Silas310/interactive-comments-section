@@ -13,12 +13,15 @@ function Comment({
   handleDelete,
   commentId,
   handleReply,
+  handleUpdate,
 }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const repliedUser = { username }; // To pass to CommentArea if replying
   const [replyText, setReplyText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(comment);
 
   const handleLike = () => {
     if (!hasLiked) {
@@ -40,8 +43,13 @@ function Comment({
 
   const onReplySubmit = async () => {
     await handleReply(commentId, replyText, username);
-    setReplyText(''); // Limpa o texto
-    setIsReplying(false); // Fecha a área
+    setReplyText('');
+    setIsReplying(false);
+  };
+
+  const handleUpdateSubmit = async () => {
+    await handleUpdate(commentId, editedText);
+    setIsEditing(false);
   };
 
   return (
@@ -103,7 +111,10 @@ function Comment({
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
-                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
+                <button
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
                   <img src="/images/icons/icon-edit.svg" alt="edit icon" />
                   <span className="text-purple-600">Edit</span>
                 </button>
@@ -119,7 +130,24 @@ function Comment({
             )}
           </div>
 
-          <p className="text-grey-500">{comment}</p>
+          {isEditing ? (
+            <textarea
+              className="w-full p-2 border border-gray-300 rounded"
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+            />
+          ) : (
+            <p className="text-grey-500">{comment}</p>
+          )}
+
+          {isEditing && (
+            <button
+              className="flex items-center justify-center btn max-w-25 mt-2 px-4 py-2 bg-purple-600 text-white rounded self-end"
+              onClick={handleUpdateSubmit}
+            >
+              UPDATE
+            </button>
+          )}
 
           <div className="flex justify-between items-center mt-4 md:hidden">
             <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl">
@@ -162,7 +190,10 @@ function Comment({
                   <img src="/images/icons/icon-delete.svg" alt="delete icon" />
                   <span className="text-pink-400">Delete</span>
                 </button>
-                <button className="flex items-center gap-2 cursor-pointer hover:opacity-50">
+                <button
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
                   <img src="/images/icons/icon-edit.svg" alt="edit icon" />
                   <span className="text-purple-600">Edit</span>
                 </button>
@@ -189,6 +220,7 @@ function Comment({
             textValue={replyText}
             setTextValue={setReplyText}
             handleSend={onReplySubmit}
+            isReplying={isReplying}
           />
         </div>
       )}
@@ -211,6 +243,7 @@ function Comment({
                 currentUser={currentUser}
                 handleDelete={handleDelete}
                 handleReply={handleReply}
+                handleUpdate={handleUpdate}
               />
             ))}
           </div>
