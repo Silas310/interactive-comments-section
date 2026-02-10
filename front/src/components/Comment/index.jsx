@@ -2,7 +2,7 @@
 // let Comment be just for render a Comment
 // Create new components
 // - CommentScore (like and dislike buttons + like count) V
-// - CommentHeader (profile image, username, time)
+// - CommentHeader (profile image, username, time) V
 // - CommentActions (edit, delete, reply buttons based on if its the current user or not)
 // - CommentContent (the comment text + edit textarea if editing)
 // Comment will then just compose these components together and pass necessary props
@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import CommentArea from '../CommentArea';
 import CommentScore from './CommentScore';
 import CommentHeader from './CommentHeader';
+import CommentActions from './CommentActions';
 
 function Comment({
   profileImage,
@@ -68,55 +69,33 @@ function Comment({
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col md:flex-row md:items-start gap-4 bg-white p-4 rounded-md relative">
-        {/* CommentScore start desktop*/}
         <CommentScore
           handleLike={handleLike}
           handleDislike={handleDislike}
           likeCount={likeCount}
           hasLiked={hasLiked}
         />
-        {/*  CommentScore end desktop*/}
 
         <div className="flex-1 flex flex-col gap-2">
           <div className="flex justify-between items-center">
-            {/* CommentHeader start */}
             <CommentHeader
               profileImage={profileImage}
               username={username}
               time={time}
               isOwner={isOwner}
             />
-            {/* CommentHeader end */}
-
-            {isOwner ? ( // del / edit buttons only for the comment owner
-              <div className="hidden md:flex items-center gap-4 font-bold cursor-pointer">
-                <button
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
-                  onClick={() => handleDelete(commentId)}
-                >
-                  <img src="/images/icons/icon-delete.svg" alt="delete icon" />
-                  <span className="text-pink-400">Delete</span>
-                </button>
-                <button
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
-                  onClick={() => setIsEditing(!isEditing)}
-                >
-                  <img src="/images/icons/icon-edit.svg" alt="edit icon" />
-                  <span className="text-purple-600">Edit</span>
-                </button>
-              </div>
-            ) : (
-              <button
-                className="hidden md:flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
-                onClick={handleIsReplying}
-              >
-                <img src="/images/icons/icon-reply.svg" alt="icon reply" />
-                Reply
-              </button>
-            )}
+            {/* CommentActions start desktop */}
+            <CommentActions
+              isOwner={isOwner}
+              onDelete={() => handleDelete(commentId)}
+              onEdit={() => setIsEditing(!isEditing)}
+              onReply={handleIsReplying}
+              layoutClasses="hidden md:flex"
+            />
           </div>
+          {/* CommentActions end desktop */}
 
-          {/* CommentActions start (render) */}
+          {/* CommentContent starts */}
           {isEditing ? (
             <textarea
               className="w-full p-2 border border-gray-300 rounded"
@@ -135,7 +114,7 @@ function Comment({
               UPDATE
             </button>
           )}
-          {/* CommentActions end (render) */}
+          {/* CommentContent ends */}
 
           <div className="flex justify-between items-center mt-4 md:hidden">
             {/* CommentScore start mobile */}
@@ -148,34 +127,15 @@ function Comment({
             />
             {/* CommentScore end mobile */}
 
-            {/* CommentActions start (render) */}
-            {isOwner ? ( // del / edit buttons only for the comment owner
-              <div className="flex items-center gap-4 font-bold cursor-pointer">
-                <button
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
-                  onClick={() => handleDelete(commentId)}
-                >
-                  <img src="/images/icons/icon-delete.svg" alt="delete icon" />
-                  <span className="text-pink-400">Delete</span>
-                </button>
-                <button
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-50"
-                  onClick={() => setIsEditing(!isEditing)}
-                >
-                  <img src="/images/icons/icon-edit.svg" alt="edit icon" />
-                  <span className="text-purple-600">Edit</span>
-                </button>
-              </div>
-            ) : (
-              <button // if not the comment owner, show reply button
-                className="flex items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer"
-                onClick={handleIsReplying}
-              >
-                <img src="/images/icons/icon-reply.svg" alt="icon reply" />
-                Reply
-              </button>
-            )}
-            {/* CommentActions end (render) */}
+            {/* CommentActions start mobile */}
+            <CommentActions
+              isOwner={isOwner}
+              onDelete={() => handleDelete(commentId)}
+              onEdit={() => setIsEditing(!isEditing)}
+              onReply={handleIsReplying}
+              layoutClasses="flex"
+            />
+            {/* CommentActions end mobile */}
           </div>
         </div>
       </div>
