@@ -1,7 +1,7 @@
 // plan to refactor:
 // let Comment be just for render a Comment
 // Create new components
-// - CommentScore (like and dislike buttons + like count)
+// - CommentScore (like and dislike buttons + like count) V
 // - CommentHeader (profile image, username, time)
 // - CommentActions (edit, delete, reply buttons based on if its the current user or not)
 // - CommentContent (the comment text + edit textarea if editing)
@@ -11,6 +11,7 @@
 import React, { useState } from 'react';
 import CommentArea from '../CommentArea';
 import CommentScore from './CommentScore';
+import CommentHeader from './CommentHeader';
 
 function Comment({
   profileImage,
@@ -33,6 +34,7 @@ function Comment({
   const [replyText, setReplyText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(comment);
+  const isOwner = currentUser?.username === username; // Check if the current user is the owner of the comment
 
   const handleLike = () => {
     if (!hasLiked) {
@@ -76,26 +78,17 @@ function Comment({
         {/*  CommentScore end desktop*/}
 
         <div className="flex-1 flex flex-col gap-2">
-          {/* CommentHeader start */}
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <img
-                src={profileImage}
-                alt="profile"
-                className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
-              />
-              <h2 className="text-grey-800 font-bold">
-                {username}{' '}
-                {username === currentUser?.username && ( // name + if its the current user, show "you" badge
-                  <span className="text-white bg-purple-600 py-[0.1rem] px-1 font-normal">
-                    you
-                  </span>
-                )}
-              </h2>
-              <span className="text-grey-500">{time}</span>
-            </div>
+            {/* CommentHeader start */}
+            <CommentHeader
+              profileImage={profileImage}
+              username={username}
+              time={time}
+              isOwner={isOwner}
+            />
+            {/* CommentHeader end */}
 
-            {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
+            {isOwner ? ( // del / edit buttons only for the comment owner
               <div className="hidden md:flex items-center gap-4 font-bold cursor-pointer">
                 <button
                   className="flex items-center gap-2 cursor-pointer hover:opacity-50"
@@ -122,7 +115,6 @@ function Comment({
               </button>
             )}
           </div>
-          {/* CommentHeader end */}
 
           {/* CommentActions start (render) */}
           {isEditing ? (
@@ -157,7 +149,7 @@ function Comment({
             {/* CommentScore end mobile */}
 
             {/* CommentActions start (render) */}
-            {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
+            {isOwner ? ( // del / edit buttons only for the comment owner
               <div className="flex items-center gap-4 font-bold cursor-pointer">
                 <button
                   className="flex items-center gap-2 cursor-pointer hover:opacity-50"
