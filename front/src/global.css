@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
-
 @import "tailwindcss";
 
 *, *::before, *::after {
@@ -35,4 +34,30 @@ body {
 
 .btn{
   @apply text-white bg-purple-600 hover:bg-purple-200 px-6 py-2 rounded-md font-medium cursor-pointer;
+}
+
+@layer components {
+  /*Score Component*/
+  /* Common style  */
+  .score-container {
+    @apply bg-grey-50 px-2 py-1.5 rounded-xl items-center gap-2;
+  }
+
+  /* Desktop Variant (Vertical) */
+  .score-desktop {
+    @apply hidden md:flex flex-col mr-4 self-start;
+  }
+
+  /* Mobile Variant (Horizontal) */
+  .score-mobile {
+    @apply flex md:hidden; /* Shows on mobile, hides on desktop */
+  }
+
+  .score-btn{
+    @apply cursor-pointer p-2 group transition-all;
+  }
+
+  .score-icon-path{
+    @apply fill-purple-200 group-hover:fill-purple-600 transition-colors;
+  }
 }

@@ -1,4 +1,4 @@
-import Comment from './Comment';
+import Comment from '../components/Comment';
 import CommentArea from './CommentArea';
 import useSWR from 'swr';
 import { useState } from 'react';

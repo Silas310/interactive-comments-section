@@ -1,5 +1,16 @@
+// plan to refactor:
+// let Comment be just for render a Comment
+// Create new components
+// - CommentScore (like and dislike buttons + like count)
+// - CommentHeader (profile image, username, time)
+// - CommentActions (edit, delete, reply buttons based on if its the current user or not)
+// - CommentContent (the comment text + edit textarea if editing)
+// Comment will then just compose these components together and pass necessary props
+// separate logic for like/dislike, delete, edit, reply into custom hooks
+// pass props through objects to avoid prop drilling and make it cleaner
 import React, { useState } from 'react';
-import CommentArea from './CommentArea';
+import CommentArea from '../CommentArea';
+import CommentScore from './CommentScore';
 
 function Comment({
   profileImage,
@@ -55,35 +66,17 @@ function Comment({
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col md:flex-row md:items-start gap-4 bg-white p-4 rounded-md relative">
-        <div className="hidden md:flex flex-col items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl mr-4 self-start">
-          <button className="cursor-pointer p-2 group" onClick={handleLike}>
-            <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
-              <path
-                className={`${hasLiked ? 'fill-purple-600' : 'fill-[#C5C6EF]'} group-hover:fill-purple-600`}
-                d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 
-                .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 
-                0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 
-                0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 
-                .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z"
-                fill="#C5C6EF"
-              />
-            </svg>
-          </button>
-          <span className="text-purple-600 font-bold">{likeCount}</span>
-          <button className="cursor-pointer p-2 group" onClick={handleDislike}>
-            <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
-              <path
-                className="group-hover:fill-purple-600"
-                d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 
-                0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 
-                .53.167h8.495Z"
-                fill="#C5C6EF"
-              />
-            </svg>
-          </button>
-        </div>
+        {/* CommentScore start desktop*/}
+        <CommentScore
+          handleLike={handleLike}
+          handleDislike={handleDislike}
+          likeCount={likeCount}
+          hasLiked={hasLiked}
+        />
+        {/*  CommentScore end desktop*/}
 
         <div className="flex-1 flex flex-col gap-2">
+          {/* CommentHeader start */}
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <img
@@ -129,7 +122,9 @@ function Comment({
               </button>
             )}
           </div>
+          {/* CommentHeader end */}
 
+          {/* CommentActions start (render) */}
           {isEditing ? (
             <textarea
               className="w-full p-2 border border-gray-300 rounded"
@@ -148,39 +143,20 @@ function Comment({
               UPDATE
             </button>
           )}
+          {/* CommentActions end (render) */}
 
           <div className="flex justify-between items-center mt-4 md:hidden">
-            <div className="flex items-center gap-2 bg-grey-50 px-2 py-1.5 rounded-xl">
-              <button className="cursor-pointer p-2 group" onClick={handleLike}>
-                <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    className={`${hasLiked ? 'fill-purple-600' : 'fill-[#C5C6EF]'} group-hover:fill-purple-600`}
-                    d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 
-                    .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 
-                    0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 
-                    0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 
-                    .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z"
-                    fill="#C5C6EF"
-                  />
-                </svg>
-              </button>
-              <span className="text-purple-600 font-bold">{likeCount}</span>
-              <button
-                className="cursor-pointer p-2 group"
-                onClick={handleDislike}
-              >
-                <svg width="11" height="3" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    className="group-hover:fill-purple-600"
-                    d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 
-                    0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 
-                    .53.167h8.495Z"
-                    fill="#C5C6EF"
-                  />
-                </svg>
-              </button>
-            </div>
+            {/* CommentScore start mobile */}
+            <CommentScore
+              handleLike={handleLike}
+              handleDislike={handleDislike}
+              likeCount={likeCount}
+              hasLiked={hasLiked}
+              layout="mobile"
+            />
+            {/* CommentScore end mobile */}
 
+            {/* CommentActions start (render) */}
             {currentUser?.username === username ? ( // del / edit buttons only for the comment owner
               <div className="flex items-center gap-4 font-bold cursor-pointer">
                 <button
@@ -207,9 +183,11 @@ function Comment({
                 Reply
               </button>
             )}
+            {/* CommentActions end (render) */}
           </div>
         </div>
       </div>
+
       {/* Reply Area */}
       {isReplying && (
         <div>
