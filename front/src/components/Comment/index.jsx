@@ -1,18 +1,9 @@
-// plan to refactor:
-// let Comment be just for render a Comment
-// Create new components
-// - CommentScore (like and dislike buttons + like count) V
-// - CommentHeader (profile image, username, time) V
-// - CommentActions (edit, delete, reply buttons based on if its the current user or not)
-// - CommentContent (the comment text + edit textarea if editing)
-// Comment will then just compose these components together and pass necessary props
-// separate logic for like/dislike, delete, edit, reply into custom hooks
-// pass props through objects to avoid prop drilling and make it cleaner
 import React, { useState } from 'react';
 import CommentArea from '../CommentArea';
 import CommentScore from './CommentScore';
 import CommentHeader from './CommentHeader';
 import CommentActions from './CommentActions';
+import CommentContent from './CommentContent';
 
 function Comment({
   profileImage,
@@ -89,7 +80,6 @@ function Comment({
               time={time}
               isOwner={isOwner}
             />
-            {/* CommentActions start desktop */}
             <CommentActions
               isOwner={isOwner}
               onDelete={() => handleDelete(commentId)}
@@ -98,31 +88,18 @@ function Comment({
               layoutClasses="hidden md:flex"
             />
           </div>
-          {/* CommentActions end desktop */}
 
           {/* CommentContent starts */}
-          {isEditing ? (
-            <textarea
-              className="w-full p-2 border border-gray-300 rounded"
-              value={editedText}
-              onChange={(e) => setEditedText(e.target.value)}
-            />
-          ) : (
-            <p className="text-grey-500">{comment}</p>
-          )}
-
-          {isEditing && (
-            <button
-              className="flex items-center justify-center btn max-w-25 mt-2 px-4 py-2 bg-purple-600 text-white rounded self-end"
-              onClick={handleUpdateSubmit}
-            >
-              UPDATE
-            </button>
-          )}
+          <CommentContent
+            comment={comment}
+            editedText={editedText}
+            setEditedText={setEditedText}
+            isEditing={isEditing}
+            handleUpdateSubmit={handleUpdateSubmit}
+          />
           {/* CommentContent ends */}
 
           <div className="flex justify-between items-center mt-4 md:hidden">
-            {/* CommentScore start mobile */}
             <CommentScore
               handleLike={handleLike}
               handleDislike={handleDislike}
@@ -130,9 +107,7 @@ function Comment({
               hasLiked={hasLiked}
               layout="mobile"
             />
-            {/* CommentScore end mobile */}
 
-            {/* CommentActions start mobile */}
             <CommentActions
               isOwner={isOwner}
               onDelete={() => handleDelete(commentId)}
@@ -140,7 +115,6 @@ function Comment({
               onReply={handleIsReplying}
               layoutClasses="flex"
             />
-            {/* CommentActions end mobile */}
           </div>
         </div>
       </div>
