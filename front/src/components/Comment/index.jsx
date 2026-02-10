@@ -52,6 +52,11 @@ function Comment({
   };
 
   const handleIsReplying = () => {
+    if (!isReplying) {
+      setReplyText(`@${username} `);
+    } else {
+      setReplyText('');
+    }
     setIsReplying(!isReplying);
   };
 
