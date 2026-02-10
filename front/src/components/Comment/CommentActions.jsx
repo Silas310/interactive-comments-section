@@ -2,21 +2,13 @@ function CommentActions({ isOwner, onDelete, onEdit, onReply, layoutClasses }) {
   return (
     <>
       {isOwner ? ( // del / edit buttons only for the comment owner
-        <div
-          className={`items-center gap-4 font-bold cursor-pointer ${layoutClasses}`}
-        >
+        <div className={`flex items-center gap-4  ${layoutClasses}`}>
           <>
-            <button
-              className="flex items-center gap-2 cursor-pointer hover:opacity-50"
-              onClick={onDelete}
-            >
+            <button className={`btn-action`} onClick={onDelete}>
               <img src="/images/icons/icon-delete.svg" alt="delete icon" />
               <span className="text-pink-400">Delete</span>
             </button>
-            <button
-              className={`flex items-center gap-2 cursor-pointer hover:opacity-50`}
-              onClick={onEdit}
-            >
+            <button className={`btn-action `} onClick={onEdit}>
               <img src="/images/icons/icon-edit.svg" alt="edit icon" />
               <span className="text-purple-600">Edit</span>
             </button>
@@ -24,7 +16,7 @@ function CommentActions({ isOwner, onDelete, onEdit, onReply, layoutClasses }) {
         </div>
       ) : (
         <button
-          className={`items-center gap-2 text-purple-600 hover:opacity-50 font-bold cursor-pointer`}
+          className={`btn-action text-purple-600 font-bold ${layoutClasses}`}
           onClick={onReply}
         >
           <img src="/images/icons/icon-reply.svg" alt="icon reply" />
