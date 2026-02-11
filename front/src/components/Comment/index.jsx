@@ -18,6 +18,7 @@ function Comment({
   commentId,
   handleReply,
   handleUpdate,
+  rootCommentId,
 }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
@@ -52,7 +53,7 @@ function Comment({
   };
 
   const onReplySubmit = async () => {
-    await handleReply(commentId, replyText, username);
+    await handleReply(commentId, replyText, username, rootCommentId);
     setReplyText('');
     setIsReplying(false);
   };
@@ -152,6 +153,7 @@ function Comment({
                 handleDelete={handleDelete}
                 handleReply={handleReply}
                 handleUpdate={handleUpdate}
+                rootCommentId={rootCommentId}
               />
             ))}
           </div>

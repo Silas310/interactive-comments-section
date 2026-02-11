@@ -12,7 +12,7 @@ function CommentsSection() {
   const { data: currentUser } = useSWR(`api/users/${USER_ID}`, fetcher);
   const [textValue, setTextValue] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const [_commentId, setCommentId] = useState(null);
+  const [_commentId, _setCommentId] = useState(null);
   const [isReplying, _setIsReplying] = useState(false);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
@@ -58,7 +58,6 @@ function CommentsSection() {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Comment deleted successfully');
           mutate(); // Refresh the comments list after deletion
         } else {
           console.error('Failed to delete comment');
@@ -69,7 +68,13 @@ function CommentsSection() {
       });
   };
 
-  const handleReply = async (commentId, replyText, replyingTo) => {
+  const handleReply = async (
+    commentId,
+    replyText,
+    replyingTo,
+    rootCommentId,
+  ) => {
+    const targetId = rootCommentId || commentId;
     if (!replyText.trim()) return;
 
     const newReply = {
@@ -79,7 +84,7 @@ function CommentsSection() {
     };
 
     try {
-      const response = await fetch(`/api/comments/${commentId}/replies`, {
+      const response = await fetch(`/api/comments/${targetId}/replies`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReply),
@@ -124,10 +129,10 @@ function CommentsSection() {
             replies={comment.replies}
             currentUser={currentUser}
             mutate={mutate}
-            setCommentId={setCommentId}
             handleDelete={handleDelete}
             handleReply={handleReply}
             handleUpdate={handleUpdate}
+            rootCommentId={comment._id}
           />
         ))}
         {currentUser && (
