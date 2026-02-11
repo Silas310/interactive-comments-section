@@ -1,5 +1,6 @@
 import Comment from '../components/Comment';
 import CommentArea from './CommentArea';
+import DeleteModal from './DeleteModal';
 import useSWR from 'swr';
 import { useState } from 'react';
 const API_URL = 'api/comments';
@@ -14,6 +15,8 @@ function CommentsSection() {
   const [isSending, setIsSending] = useState(false);
   const [_commentId, _setCommentId] = useState(null);
   const [isReplying, _setIsReplying] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
 
   if (isLoading || !currentUser) return <div>Loading...</div>;
   if (error) return <div>Error loading comments</div>;
@@ -65,7 +68,16 @@ function CommentsSection() {
       })
       .catch((error) => {
         console.error('Error deleting comment: ', error);
+      })
+      .finally(() => {
+        setIsModalOpen(false);
+        setIdToDelete(null);
       });
+  };
+
+  const handleDeleteClick = (commentId) => {
+    setIdToDelete(commentId);
+    setIsModalOpen(true);
   };
 
   const handleReply = async (
@@ -129,7 +141,7 @@ function CommentsSection() {
             replies={comment.replies}
             currentUser={currentUser}
             mutate={mutate}
-            handleDelete={handleDelete}
+            handleDeleteClick={handleDeleteClick}
             handleReply={handleReply}
             handleUpdate={handleUpdate}
             rootCommentId={comment._id}
@@ -147,6 +159,12 @@ function CommentsSection() {
           />
         )}
       </section>
+      {isModalOpen && (
+        <DeleteModal
+          onDelete={() => handleDelete(idToDelete)}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      )}
     </>
   );
 }

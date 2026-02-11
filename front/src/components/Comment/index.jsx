@@ -14,7 +14,7 @@ function Comment({
   replies,
   currentUser,
   mutate,
-  handleDelete,
+  handleDeleteClick,
   commentId,
   handleReply,
   handleUpdate,
@@ -83,7 +83,7 @@ function Comment({
             />
             <CommentActions
               isOwner={isOwner}
-              onDelete={() => handleDelete(commentId)}
+              onDelete={() => handleDeleteClick(commentId)}
               onEdit={() => setIsEditing(!isEditing)}
               onReply={handleIsReplying}
               layoutClasses="hidden md:flex"
@@ -111,7 +111,7 @@ function Comment({
 
             <CommentActions
               isOwner={isOwner}
-              onDelete={() => handleDelete(commentId)}
+              onDelete={() => handleDeleteClick(commentId)}
               onEdit={() => setIsEditing(!isEditing)}
               onReply={handleIsReplying}
               layoutClasses="flex"
@@ -150,7 +150,7 @@ function Comment({
                 likes={reply.score}
                 replies={reply.replies}
                 currentUser={currentUser}
-                handleDelete={handleDelete}
+                handleDeleteClick={handleDeleteClick}
                 handleReply={handleReply}
                 handleUpdate={handleUpdate}
                 rootCommentId={rootCommentId}
