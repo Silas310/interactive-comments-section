@@ -102,20 +102,25 @@ app.post('/api/comments', (req, res) => { // add a new comment
 
 app.patch('/api/comments/:id', async (req, res) => {
   const { id } = req.params;
-  const { content } = req.body;
+  const updates = req.body;
 
   try { // main comments logic
     let updated = await Comment.findByIdAndUpdate(
-      id, 
-      { content }, 
+      id,
+      {$set: updates},
       { new: true, runValidators: true }
     );
 
     if (!updated) { // reply logic
+      const replyUpdates = {};
+      for (let key in updates) { // update by keys with req.body received from the frontend
+        replyUpdates[`replies.$.${key}`] = updates[key];
+      }
+
       updated = await Comment.findOneAndUpdate(
         { "replies._id": id },
-        { $set: { "replies.$.content": content } },
-        { new: true }
+        { $set: replyUpdates }, // set new values with preeviously created replyUpdates object
+        { new: true, runValidators: true }
       );
     }
 

@@ -126,6 +126,22 @@ function CommentsSection() {
     }
   };
 
+  const handleScoreUpdate = async (id, newScore) => {
+    try {
+      const response = await fetch(`/api/comments/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: newScore }),
+      });
+
+      if (response.ok) {
+        mutate();
+      }
+    } catch (err) {
+      console.error('Score update failed', err);
+    }
+  };
+
   return (
     <>
       <section className="flex flex-col gap-4 py-6 w-full max-w-3xl mx-auto px-4 md:gap-6">
@@ -145,6 +161,7 @@ function CommentsSection() {
             handleReply={handleReply}
             handleUpdate={handleUpdate}
             rootCommentId={comment._id}
+            handleScoreUpdate={handleScoreUpdate}
           />
         ))}
         {currentUser && (

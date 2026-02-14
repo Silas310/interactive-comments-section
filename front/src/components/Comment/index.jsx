@@ -19,6 +19,7 @@ function Comment({
   handleReply,
   handleUpdate,
   rootCommentId,
+  handleScoreUpdate,
 }) {
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
@@ -33,6 +34,7 @@ function Comment({
     if (!hasLiked) {
       setLikeCount(likeCount + 1);
       setHasLiked(true);
+      handleScoreUpdate(commentId, likeCount + 1);
     }
   };
 
@@ -40,6 +42,7 @@ function Comment({
     if (hasLiked) {
       setLikeCount(likeCount - 1);
       setHasLiked(false);
+      handleScoreUpdate(commentId, likeCount - 1);
     }
   };
 
