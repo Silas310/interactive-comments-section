@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const Comment = require('../models/comment');
-const User = require('../models/user');
+const Comment = require('../models/Comment');
+const User = require('../models/User');
 
 app.use(express.static(path.join(__dirname, '..', 'public'))); // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '..', '..', 'front', 'dist'))); // Serve static files from the front/dist directory

@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoose = require('mongoose');
 const app = require('./app');
-const Comment = require('./models/comment');
 
 const url = process.env.MONGODB_URI;
 const port = process.env.PORT;
