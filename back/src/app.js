@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const Comment = require('./models/comment');
-const User = require('../src/models/User');
+const Comment = require('../models/comment');
+const User = require('../models/user');
 
-app.use(express.static(path.join(__dirname, '/public'))); // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, '../front/dist')));
+app.use(express.static(path.join(__dirname, '..', 'public'))); // Serve static files from the public directory
+app.use(express.static(path.join(__dirname, '..', '..', 'front', 'dist'))); // Serve static files from the front/dist directory
 
 app.use(express.json());
 
@@ -166,7 +166,7 @@ app.delete('/api/comments/:id', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'front', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', '..', 'front', 'dist', 'index.html'));
 });
 
 module.exports = app;
