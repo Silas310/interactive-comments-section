@@ -4,6 +4,6 @@
   "scripts": {
     "install-all": "npm install && cd front && npm install && cd ../back && npm install",
     "build": "cd front && npm install && npm run build",
-    "start": "node back/app.js"
+    "start": "node back/src/app.js"
   }
 }
