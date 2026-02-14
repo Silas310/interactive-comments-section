@@ -149,7 +149,7 @@ function CommentsSection() {
           <Comment
             key={comment._id}
             commentId={comment._id}
-            profileImage={`/${comment.user.image.png}`}
+            profileImage={comment.user.image.png}
             username={comment.user.username}
             comment={comment.content}
             time={comment.createdAt || ''}
@@ -167,7 +167,7 @@ function CommentsSection() {
         {currentUser && (
           <CommentArea
             key={currentUser._id}
-            profileImage={`/${currentUser.image.png}`}
+            profileImage={currentUser.image.png}
             handleSend={handleSend}
             textValue={textValue}
             setTextValue={setTextValue}

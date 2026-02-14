@@ -165,7 +165,7 @@ app.delete('/api/comments/:id', async (req, res) => {
   }
 });
 
-app.get('*', (req, res) => {
+app.get(/^(?!\/api).+/, (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'front', 'dist', 'index.html'));
 });
 
