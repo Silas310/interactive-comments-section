@@ -4,46 +4,11 @@ const path = require('path');
 const Comment = require('./models/comment');
 const User = require('../src/models/User');
 
-app.use(express.static(path.join(__dirname, '../public'))); // Serve static files from the public directory
+app.use(express.static(path.join(__dirname, '/public'))); // Serve static files from the public directory
+app.use(express.static(path.join(__dirname, '../front/dist')));
 
 app.use(express.json());
 
-app.delete('/api/comments/:id', async (req, res) => {
-  console.log('Delete request received for ID:', req.params.id);
-  const { id } = req.params;
-
-  try {
-    const deletedComment = await Comment.findByIdAndDelete(id);
-
-    if (deletedComment) {
-      console.log('Parent comment deleted:', id);
-      return res.status(204).end();
-    }
-
-    const updatedParent = await Comment.findOneAndUpdate(
-      { "replies._id": id },
-      { $pull: { replies: { _id: id } } }, // pull the reply with the given id from the replies array of its parent comment
-      { new: true }
-    );
-
-    if (updatedParent) { // if a reply was deleted, return 204
-      return res.status(204).end();
-    }
-
-    return res.status(404).json({ error: 'Comment or Reply not found' });
-
-  } catch (error) {
-    if (error.name === 'CastError') {
-      return res.status(400).json({ error: 'Invalid ID format' });
-    }
-    console.error('Error deleting:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/', (_req, res) => {
-  res.send('Hello World!');
-});
 
 app.get('/api/comments', (_req, res) => { // get all comments
   Comment.find({})
@@ -165,6 +130,43 @@ app.post('/api/comments/:id/replies', (req, res) => { // add a reply to a commen
       console.error('Error adding reply: ', error.message);
       res.status(500).json({ error: 'Internal Server Error' });
     });
+});
+
+app.delete('/api/comments/:id', async (req, res) => {
+  console.log('Delete request received for ID:', req.params.id);
+  const { id } = req.params;
+
+  try {
+    const deletedComment = await Comment.findByIdAndDelete(id);
+
+    if (deletedComment) {
+      console.log('Parent comment deleted:', id);
+      return res.status(204).end();
+    }
+
+    const updatedParent = await Comment.findOneAndUpdate(
+      { "replies._id": id },
+      { $pull: { replies: { _id: id } } }, // pull the reply with the given id from the replies array of its parent comment
+      { new: true }
+    );
+
+    if (updatedParent) { // if a reply was deleted, return 204
+      return res.status(204).end();
+    }
+
+    return res.status(404).json({ error: 'Comment or Reply not found' });
+
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid ID format' });
+    }
+    console.error('Error deleting:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'front', 'dist', 'index.html'));
 });
 
 module.exports = app;
