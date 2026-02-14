@@ -65,7 +65,6 @@ function Comment({
     await handleUpdate(commentId, editedText);
     setIsEditing(false);
   };
-  console.log(profileImage);
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <div className="flex flex-col md:flex-row md:items-start gap-4 bg-white p-4 rounded-md relative">
@@ -127,7 +126,7 @@ function Comment({
       {isReplying && (
         <div>
           <CommentArea
-            profileImage={profileImage}
+            profileImage={currentUser?.image?.png}
             isReplying={isReplying}
             repliedUsername={repliedUser.username}
             textValue={replyText}
