@@ -3,7 +3,7 @@ import CommentArea from './CommentArea';
 import DeleteModal from './DeleteModal';
 import useSWR from 'swr';
 import { useState } from 'react';
-const API_URL = 'api/comments';
+const API_URL = '/api/comments';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
