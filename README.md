@@ -115,7 +115,8 @@ Script: back/scripts/reseed-comments.mjs
 
 ## Autor
 
-[Silas](www.linkedin.com/in/silascosta310)
+[Silas](https://www.linkedin.com/in/silascosta310)
+
 
 ---
 
@@ -211,4 +212,4 @@ Script: back/scripts/reseed-comments.mjs
 
 ## Author (EN)
 
-[Silas](www.linkedin.com/in/silascosta310)
+[Silas](https://www.linkedin.com/in/silascosta310)
