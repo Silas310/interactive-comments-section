@@ -11,7 +11,7 @@ const replySchema = new mongoose.Schema({
   content: { type: String, required: true }, 
   score: { type: Number, default: 0 },
   replyingTo: { type: String, required: true },
-  createdAt: { type: String, default: "Today" }
+  createdAt: { type: String, default: Date.now().toString() },
 }, { _id: true });
 
 const commentSchema = new mongoose.Schema({
@@ -24,7 +24,7 @@ const commentSchema = new mongoose.Schema({
   },
   content: { type: String, required: true },
   score: { type: Number, default: 0 },
-  createdAt: { type: String },
+  createdAt: { type: String, default: Date.now().toString() },
   replies: [replySchema],
 });
 

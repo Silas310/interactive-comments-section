@@ -1,4 +1,8 @@
+import { formatTimeAgo } from '../../utils/formatTimeAgo';
+
 function CommentHeader({ profileImage, username, time, isOwner }) {
+  const formattedTime = formatTimeAgo(time);
+
   return (
     <div className="flex items-center gap-2">
       <img
@@ -14,7 +18,7 @@ function CommentHeader({ profileImage, username, time, isOwner }) {
           </span>
         )}
       </h2>
-      <span className="text-grey-500">{time}</span>
+      <span className="text-grey-500">{formattedTime}</span>
     </div>
   );
 }
