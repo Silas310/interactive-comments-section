@@ -2,7 +2,7 @@
 
 Aplicação full stack baseada no desafio da Frontend Mentor, [Interactive comments section](https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9), com CRUD de comentários e respostas, votação e persistência em MongoDB.
 
-![Project preview](docs/images/preview.png)
+![Project preview](docs/images/preview.gif)
 
 ## Sumário
 
